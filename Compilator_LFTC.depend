@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1618314922 source:d:\codeblocks\compilator_lftc\main.c
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<ctype.h>
+	<string.h>
+	<stdarg.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+
+1620064871 source:c:\users\aleku\desktop\lftc\compilator_lftc\main.c
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<ctype.h>
+	<string.h>
+	<stdarg.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+
