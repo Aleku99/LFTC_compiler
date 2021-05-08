@@ -316,7 +316,8 @@ int getNextTk() {
 			}
 			case 2:
             {
-                nCh = pCrtCh - pStartCh + 1; // lungimea cuvantului gasit
+                //nCh = pCrtCh - pStartCh + 1; // lungimea cuvantului gasit
+                nCh = pCrtCh - pStartCh; // lungimea cuvantului gasit
                 // teste cuvinte cheie
                 if(nCh == 5 && !memcmp(pStartCh,"break",5))
                     tk = addTk(BREAK);
@@ -691,7 +692,7 @@ int getNextTk() {
                 else
                 {
                     state = 40; //DIV
-                    pCrtCh++;
+                    //pCrtCh++;
                 }
                 break;
             }
@@ -845,510 +846,1428 @@ int getNextTk() {
 }
 
     Token *crtTk;
-    int consume(int code){
-        //printf("\n#consume %s", tokenNames[code]);
-        if(crtTk->code == code){
-            //printf("=> consumat \n");
-            crtTk=crtTk->next;
+//    int consume(int code){
+//        //printf("\n#consume %s", tokenNames[code]);
+//        if(crtTk->code == code){
+//            //printf("=> consumat \n");
+//            crtTk=crtTk->next;
+//
+//            return 1;
+//        } else {
+//            //printf("->altceva (%s)", tokenNames[crtTk->code]);
+//            return 0;
+//        }
+//    }
+//
+//    int stm(){
+//        Token *startTk=crtTk;
+//        if(stmCompound()){
+//            return 1;
+//        }else if(consume(IF)){
+//            if(consume(LPAR)){
+//                if(expr()){
+//                    if(consume(RPAR)){
+//                        if(stm()){
+//                            if(consume(ELSE)){
+//                                if(stm());
+//                            }
+//                            return 1;
+//                        }
+//                    }
+//                }
+//            }
+//        }else if(consume(WHILE)){
+//            if(consume(LPAR)){
+//                if(expr()){
+//                    if(consume(RPAR)){
+//                        if(stm()){
+//                            return 1;
+//                        }
+//                    }
+//                }
+//            }
+//        }else if(consume(FOR)){
+//            if(consume(LPAR)){
+//                if(expr());
+//                if(consume(SEMICOLON)){
+//                    if(expr());
+//                    if(consume(SEMICOLON)){
+//                        if(expr());
+//                        if(consume(RPAR)){
+//                            if(stm())
+//                                return 1;
+//                        }
+//                    }
+//                }
+//            }
+//        }else if(consume(BREAK)){
+//            if(consume(SEMICOLON))
+//                return 1;
+//                else tkerr(crtTk,"Missing Semicolon");
+//        }else if(consume(RETURN)){
+//            if(expr());
+//            if(consume(SEMICOLON))
+//                return 1;
+//             else tkerr(crtTk,"Missing Semicolon");
+//        }else if(expr()){
+//            if(consume(SEMICOLON))
+//                return 1;
+//            else tkerr(crtTk,"Missing Semicolon");
+//        }else if(consume(SEMICOLON)){
+//            return 1;
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int stmCompound(){
+//        Token *startTk=crtTk;
+//        if(consume(LACC)){
+//            while(1){
+//                if(declVar() || stm());
+//                else break;
+//            }
+//
+//            if(consume(RACC)){
+//                return 1;
+//            }else tkerr(crtTk, "Missing Racc in stmcompund");
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int declFunc(){
+//        Token *startTk=crtTk;
+//        if(typeBase()){
+//            if(consume(MUL));
+//                if(consume(ID)){
+//                    if(consume(LPAR)){
+//                        if(funcArg()){
+//                            while(1){
+//                                if(consume(COMMA)){
+//                                    if(funcArg());
+//                                    else tkerr(crtTk,"Missing Variable in function param");
+//                                }else break;
+//                            }
+//                        }
+//                        if(consume(RPAR)){
+//                            if(stmCompound()){
+//                                return 1;
+//                            }
+//                        }else tkerr(crtTk, "Missing Rpar in func");
+//                    }
+//                }
+//        }else if(consume(VOID)){
+//            if(consume(ID)){
+//                if(consume(LPAR)){
+//                    if(funcArg()){
+//                        while(1){
+//                            if(consume(COMMA)){
+//                                if(funcArg());
+//                                else tkerr(crtTk,"Missing Variable in function param");
+//                            }else break;
+//                        }
+//                    }
+//                    if(consume(RPAR)){
+//                        if(stmCompound()){
+//                            return 1;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int funcArg(){
+//        Token *startTk=crtTk;
+//        if(typeBase()){
+//            if(consume(ID)){
+//                if(arrayDecl());
+//                return 1;
+//            }else tkerr(crtTk, "Missing ID in funcArg");
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int typeName(){
+//        Token *startTk=crtTk;
+//        if(typeBase()){
+//            arrayDecl();
+//            return 1;
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int typeBase(){
+//        Token *startTk=crtTk;
+//        if(consume(INT) || consume(DOUBLE) || consume(CHAR)){
+//                return 1;
+//       }else if(consume(STRUCT)){
+//            if(consume(ID)){
+//                return 1;
+//            }
+//       }
+//
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprAnd1(){
+//        Token *startTk=crtTk;
+//        if(consume(AND)){
+//            if(exprEq()){
+//                if(exprAnd1()){
+//                    return 1;
+//                }
+//            }else tkerr(crtTk, "Missing expr in right side");
+//       }
+//       return 1;
+//         crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprAnd(){
+//        Token *startTk=crtTk;
+//        if(exprEq()){
+//            if(exprAnd1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprOr1(){
+//        Token *startTk=crtTk;
+//        if(consume(OR)){
+//            if(exprAnd()){
+//                if(exprOr1()){
+//                    return 1;
+//                }
+//            }
+//       }
+//       return 1;
+//         crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprOr(){
+//        Token *startTk=crtTk;
+//        if(exprAnd()){
+//            if(exprOr1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprCast(){
+//        Token *startTk=crtTk;
+//        if(consume(LPAR)){
+//            if(typeName()){
+//                if(consume(RPAR)){
+//                    if(exprCast()){
+//                        return 1;
+//                    }
+//                }
+//            }
+//       } else if(exprUnary()){
+//        return 1;
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprMul1(){
+//        Token *startTk=crtTk;
+//        if(consume(MUL) || consume(DIV)){
+//                if(exprCast()){
+//                if(exprMul1()){
+//                    return 1;
+//                }
+//            }else tkerr(crtTk,"Missing right side expr in exprUNary");
+//       }
+//        return 1;
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprMul(){
+//        Token *startTk=crtTk;
+//        if(exprCast()){
+//            if(exprMul1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprAdd1(){
+//        Token *startTk=crtTk;
+//        if(consume(ADD) || consume(SUB)){
+//                if(exprMul()){
+//                    if(exprAdd1()){
+//                        return 1;
+//                    }
+//                }else tkerr(crtTk, "Missing expr in right side");
+//       }
+//        return 1;
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprAdd(){
+//        Token *startTk=crtTk;
+//        if(exprMul()){
+//            if(exprAdd1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprRel1(){
+//        Token *startTk=crtTk;
+//        if(consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ)){
+//            if(exprAdd()){
+//                if(exprRel1()){
+//                    return 1;
+//                }
+//            }else tkerr(crtTk, "Missing expr in right side");
+//       }
+//        return 1;
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprRel(){
+//        Token *startTk=crtTk;
+//        if(exprAdd()){
+//            if(exprRel1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprEq1(){
+//        Token *startTk=crtTk;
+//        if(consume(EQUAL) || consume(NOTEQ)){
+//                if(exprRel()){
+//                if(exprEq1()){
+//                    return 1;
+//                }
+//            }else tkerr(crtTk, "Missing expr in right side");
+//       }
+//        return 1;
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprEq(){
+//        Token *startTk=crtTk;
+//        if(exprRel()){
+//            if(exprEq1()){
+//                return 1;
+//            }
+//       }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprPrimary(){
+//       Token *startTk=crtTk;
+//        if(consume(ID)){
+//            if(consume(LPAR)){
+//                if(expr()){
+//                    if(consume(COMMA))
+//                    if(expr());
+//                    else tkerr(crtTk,"Missing exprPrimary after SEMICOLON");
+//                }
+//                if(consume(RPAR));
+//                else tkerr(crtTk, "MIssing Rpar in exprPrimary");
+//            }
+//            return 1;
+//       }else if(consume(CT_INT))
+//            return 1;
+//        else if(consume(CT_REAL))
+//            return 1;
+//        else if(consume(CT_CHAR))
+//            return 1;
+//        else if(consume(CT_STRING))
+//            return 1;
+//        else if(consume(LPAR)){
+//                if(consume(expr())){
+//                    if(consume(RPAR)){
+//                        return 1;
+//                    }else tkerr(crtTk,"Missing Rpar in exprPrimary");
+//                }
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprPostfix1() {
+//        if(consume(LBRACKET)) {
+//            if(!expr()) tkerr(crtTk, "invalid expression");
+//            if(!consume(RBRACKET)) tkerr(crtTk, "missing ]");
+//            if(!exprPostfix1()) tkerr(crtTk, "missing postfix1 expression");
+//            return 1;
+//        }
+//        else if(consume(DOT)) {
+//            if(!consume(ID)) tkerr(crtTk, "missind ID");
+//            if(!exprPostfix1()) tkerr(crtTk, "missing postfix1 expression");
+//            return 1;
+//        }
+//        return 1;
+//    }
+//
+//    int exprPostfix() {
+//        Token *startTk=crtTk;
+//        if(exprPrimary()) {
+//            if(exprPostfix1());
+//                return 1;
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprUnary(){
+//        Token *startTk=crtTk;
+//
+//        if(consume(SUB)){
+//            if(exprUnary()){
+//                return 1;
+//            }else tkerr(crtTk,"Missing right side expr in exprUNary");
+//        }else if(consume(NOT)){
+//            if(exprUnary()){
+//                return 1;
+//            }else tkerr(crtTk,"Missing right side expr in exprUNary");
+//        }else if (exprPostfix()){
+//            return 1;
+//        }
+//
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int exprAssign(){
+//        Token *startTk=crtTk;
+//        if(exprUnary()){
+//           if(consume(ASSIGN)){
+//                if(exprAssign()){
+//                    return 1;
+//                }
+//           }
+//        }
+//        crtTk=startTk;
+//        if(exprOr()){
+//            return 1;
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int expr(){
+//        return exprAssign();
+//    }
+//
+//    int arrayDecl(){
+//        Token *startTk=crtTk;
+//        if(consume(LBRACKET)){
+//            consume(expr());
+//            if(consume(RBRACKET)){
+//                return 1;
+//            }else tkerr(crtTk, "Missing Rbracket in array declaration");
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int declVar(){
+//        Token *startTk=crtTk;
+//        if(typeBase()){
+//                if(consume(ID)){
+//                        arrayDecl();
+//                        while(1){
+//                            if(consume(COMMA)){
+//                                if(consume(ID)){
+//                                    arrayDecl();
+//                                } else printf("Expected ID after comma");
+//                            } else break;
+//                        }
+//                        if(consume(SEMICOLON)){
+//                            return 1;
+//                        }else tkerr(crtTk,"Missing Semicolon");
+//                }
+//        }
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int declStruct(){
+//        Token *startTk=crtTk;
+//        if(consume(STRUCT)){
+//            if(consume(ID)){
+//                if(consume(LACC)){
+//                 while(1){
+//                    if(declVar()){}
+//                    else break;
+//                 }
+//                 if(consume(RACC)){
+//                    if(consume(SEMICOLON)){
+//                        return 1;
+//                    }else tkerr(crtTk,"Missing Semicolon");
+//                 }
+//                }
+//            }
+//        }
+//
+//        crtTk=startTk;
+//        return 0;
+//    }
+//
+//    int unit(){
+//        while(1){
+//            if(declStruct()){}
+//            else if(declFunc()){}
+//            else if(declVar()){}
+//            else break;
+//        }
+//        if(consume(END)){
+//            return 1;
+//        }else{
+//            printf("expected END of file");
+//        }
+//        return 0;
+//    }
 
-            return 1;
-        } else {
-            //printf("->altceva (%s)", tokenNames[crtTk->code]);
-            return 0;
+int unit()
+{
+    //printf("unit()\n");
+    Token *startTk=crtTk;
+    for(;;)
+    {
+        if(!declStruct() && !declFunc() && !declVar())
+        {
+            break;
         }
     }
+    if(consume(END))
+    {
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
 
-    int stm(){
-        Token *startTk=crtTk;
-        if(stmCompound()){
-            return 1;
-        }else if(consume(IF)){
-            if(consume(LPAR)){
-                if(expr()){
-                    if(consume(RPAR)){
-                        if(stm()){
-                            if(consume(ELSE)){
-                                if(stm());
-                            }
-                            return 1;
-                        }
-                    }
-                }
-            }
-        }else if(consume(WHILE)){
-            if(consume(LPAR)){
-                if(expr()){
-                    if(consume(RPAR)){
-                        if(stm()){
-                            return 1;
-                        }
-                    }
-                }
-            }
-        }else if(consume(FOR)){
-            if(consume(LPAR)){
-                if(expr());
-                if(consume(SEMICOLON)){
-                    if(expr());
-                    if(consume(SEMICOLON)){
-                        if(expr());
-                        if(consume(RPAR)){
-                            if(stm())
-                                return 1;
-                        }
-                    }
-                }
-            }
-        }else if(consume(BREAK)){
-            if(consume(SEMICOLON))
-                return 1;
-                else tkerr(crtTk,"Missing Semicolon");
-        }else if(consume(RETURN)){
-            if(expr());
-            if(consume(SEMICOLON))
-                return 1;
-             else tkerr(crtTk,"Missing Semicolon");
-        }else if(expr()){
-            if(consume(SEMICOLON))
-                return 1;
-            else tkerr(crtTk,"Missing Semicolon");
-        }else if(consume(SEMICOLON)){
-            return 1;
-        }
-        crtTk=startTk;
+int consume(int code)//Consuma atomi terminali
+{
+    //printf("consume()\n");
+    //printf("Line:%d Trying to consume: %s",crtTk->line,conv(code));
+    lastToken=crtTk;
+    if(crtTk->code==code)
+    {
+        //printf("%d : %s\n",crtTk->line,conv(crtTk->code));
+        //printf("=>consumed\n ");
+        crtTk=crtTk->next;
+        return 1;
+    }
+    else
+    {
+        //printf("=>false( %s )\n",conv(crtTk->code));
         return 0;
     }
+}
 
-    int stmCompound(){
-        Token *startTk=crtTk;
-        if(consume(LACC)){
-            while(1){
-                if(declVar() || stm());
-                else break;
-            }
-
-            if(consume(RACC)){
-                return 1;
-            }else tkerr(crtTk, "Missing Racc in stmcompund");
-        }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int declFunc(){
-        Token *startTk=crtTk;
-        if(typeBase()){
-            if(consume(MUL));
-                if(consume(ID)){
-                    if(consume(LPAR)){
-                        if(funcArg()){
-                            while(1){
-                                if(consume(COMMA)){
-                                    if(funcArg());
-                                    else tkerr(crtTk,"Missing Variable in function param");
-                                }else break;
-                            }
-                        }
-                        if(consume(RPAR)){
-                            if(stmCompound()){
-                                return 1;
-                            }
-                        }else tkerr(crtTk, "Missing Rpar in func");
-                    }
-                }
-        }else if(consume(VOID)){
-            if(consume(ID)){
-                if(consume(LPAR)){
-                    if(funcArg()){
-                        while(1){
-                            if(consume(COMMA)){
-                                if(funcArg());
-                                else tkerr(crtTk,"Missing Variable in function param");
-                            }else break;
-                        }
-                    }
-                    if(consume(RPAR)){
-                        if(stmCompound()){
-                            return 1;
-                        }
-                    }
-                }
-            }
-        }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int funcArg(){
-        Token *startTk=crtTk;
-        if(typeBase()){
-            if(consume(ID)){
-                if(arrayDecl());
-                return 1;
-            }else tkerr(crtTk, "Missing ID in funcArg");
-        }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int typeName(){
-        Token *startTk=crtTk;
-        if(typeBase()){
+int funcArg()
+{
+    //printf("funcArg()\n");
+    Token *startTk=crtTk;
+    if(typeBase())
+    {
+        if(consume(ID))
+        {
             arrayDecl();
             return 1;
         }
-        crtTk=startTk;
-        return 0;
+        else
+        {
+            tkerr(crtTk,"Missing ID after typeBase!");
+        }
+
     }
+    startTk=crtTk;
+    return 0;
+}
 
-    int typeBase(){
-        Token *startTk=crtTk;
-        if(consume(INT) || consume(DOUBLE) || consume(CHAR)){
-                return 1;
-       }else if(consume(STRUCT)){
-            if(consume(ID)){
-                return 1;
-            }
-       }
-
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprAnd1(){
-        Token *startTk=crtTk;
-        if(consume(AND)){
-            if(exprEq()){
-                if(exprAnd1()){
-                    return 1;
-                }
-            }else tkerr(crtTk, "Missing expr in right side");
-       }
-       return 1;
-         crtTk=startTk;
-        return 0;
-    }
-
-    int exprAnd(){
-        Token *startTk=crtTk;
-        if(exprEq()){
-            if(exprAnd1()){
-                return 1;
-            }
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprOr1(){
-        Token *startTk=crtTk;
-        if(consume(OR)){
-            if(exprAnd()){
-                if(exprOr1()){
-                    return 1;
-                }
-            }
-       }
-       return 1;
-         crtTk=startTk;
-        return 0;
-    }
-
-    int exprOr(){
-        Token *startTk=crtTk;
-        if(exprAnd()){
-            if(exprOr1()){
-                return 1;
-            }
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprCast(){
-        Token *startTk=crtTk;
-        if(consume(LPAR)){
-            if(typeName()){
-                if(consume(RPAR)){
-                    if(exprCast()){
-                        return 1;
-                    }
-                }
-            }
-       } else if(exprUnary()){
+int typeBase()
+{
+    //printf("typeBase()\n");
+    Token *startTk=crtTk;
+    if(consume(INT) || consume(DOUBLE) || consume(CHAR))
         return 1;
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprMul1(){
-        Token *startTk=crtTk;
-        if(consume(MUL) || consume(DIV)){
-                if(exprCast()){
-                if(exprMul1()){
-                    return 1;
-                }
-            }else tkerr(crtTk,"Missing right side expr in exprUNary");
-       }
-        return 1;
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprMul(){
-        Token *startTk=crtTk;
-        if(exprCast()){
-            if(exprMul1()){
+    else
+        if(consume(STRUCT))
+        {
+            if(consume(ID))
                 return 1;
+            else
+            {
+                tkerr(crtTk,"Missing ID for STRUCT");
             }
-       }
-        crtTk=startTk;
-        return 0;
-    }
 
-    int exprAdd1(){
-        Token *startTk=crtTk;
-        if(consume(ADD) || consume(SUB)){
-                if(exprMul()){
-                    if(exprAdd1()){
-                        return 1;
-                    }
-                }else tkerr(crtTk, "Missing expr in right side");
-       }
-        return 1;
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprAdd(){
-        Token *startTk=crtTk;
-        if(exprMul()){
-            if(exprAdd1()){
-                return 1;
-            }
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprRel1(){
-        Token *startTk=crtTk;
-        if(consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ)){
-            if(exprAdd()){
-                if(exprRel1()){
-                    return 1;
-                }
-            }else tkerr(crtTk, "Missing expr in right side");
-       }
-        return 1;
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprRel(){
-        Token *startTk=crtTk;
-        if(exprAdd()){
-            if(exprRel1()){
-                return 1;
-            }
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprEq1(){
-        Token *startTk=crtTk;
-        if(consume(EQUAL) || consume(NOTEQ)){
-                if(exprRel()){
-                if(exprEq1()){
-                    return 1;
-                }
-            }else tkerr(crtTk, "Missing expr in right side");
-       }
-        return 1;
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprEq(){
-        Token *startTk=crtTk;
-        if(exprRel()){
-            if(exprEq1()){
-                return 1;
-            }
-       }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprPrimary(){
-       Token *startTk=crtTk;
-        if(consume(ID)){
-            if(consume(LPAR)){
-                if(expr()){
-                    if(consume(COMMA))
-                    if(expr());
-                    else tkerr(crtTk,"Missing exprPrimary after SEMICOLON");
-                }
-                if(consume(RPAR));
-                else tkerr(crtTk, "MIssing Rpar in exprPrimary");
-            }
-            return 1;
-       }else if(consume(CT_INT))
-            return 1;
-        else if(consume(CT_REAL))
-            return 1;
-        else if(consume(CT_CHAR))
-            return 1;
-        else if(consume(CT_STRING))
-            return 1;
-        else if(consume(LPAR)){
-                if(consume(expr())){
-                    if(consume(RPAR)){
-                        return 1;
-                    }else tkerr(crtTk,"Missing Rpar in exprPrimary");
-                }
         }
-        crtTk=startTk;
-        return 0;
-    }
+    crtTk=startTk;
+    return 0;
 
-    int exprPostfix1() {
-        if(consume(LBRACKET)) {
-            if(!expr()) tkerr(crtTk, "invalid expression");
-            if(!consume(RBRACKET)) tkerr(crtTk, "missing ]");
-            if(!exprPostfix1()) tkerr(crtTk, "missing postfix1 expression");
+}
+
+int arrayDecl()
+{
+    //printf("arrayDecl()\n");
+    Token *startTk=crtTk;
+    if(consume(LBRACKET))
+    {
+        expr();
+        if(consume(RBRACKET))
             return 1;
+        else
+        {
+            tkerr(crtTk,"Missing right bracket!");
         }
-        else if(consume(DOT)) {
-            if(!consume(ID)) tkerr(crtTk, "missind ID");
-            if(!exprPostfix1()) tkerr(crtTk, "missing postfix1 expression");
-            return 1;
-        }
-        return 1;
     }
+    crtTk=startTk;
+    return 0;
+}
 
-    int exprPostfix() {
-        Token *startTk=crtTk;
-        if(exprPrimary()) {
-            if(exprPostfix1());
-                return 1;
-        }
-        crtTk=startTk;
-        return 0;
-    }
 
-    int exprUnary(){
-        Token *startTk=crtTk;
-
-        if(consume(SUB)){
-            if(exprUnary()){
-                return 1;
-            }else tkerr(crtTk,"Missing right side expr in exprUNary");
-        }else if(consume(NOT)){
-            if(exprUnary()){
-                return 1;
-            }else tkerr(crtTk,"Missing right side expr in exprUNary");
-        }else if (exprPostfix()){
-            return 1;
-        }
-
-        crtTk=startTk;
-        return 0;
-    }
-
-    int exprAssign(){
-        Token *startTk=crtTk;
-        if(exprUnary()){
-           if(consume(ASSIGN)){
-                if(exprAssign()){
-                    return 1;
-                }
-           }
-        }
-        crtTk=startTk;
-        if(exprOr()){
-            return 1;
-        }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int expr(){
-        return exprAssign();
-    }
-
-    int arrayDecl(){
-        Token *startTk=crtTk;
-        if(consume(LBRACKET)){
-            consume(expr());
-            if(consume(RBRACKET)){
-                return 1;
-            }else tkerr(crtTk, "Missing Rbracket in array declaration");
-        }
-        crtTk=startTk;
-        return 0;
-    }
-
-    int declVar(){
-        Token *startTk=crtTk;
-        if(typeBase()){
-                if(consume(ID)){
+int declVar()
+{
+    //printf("declVar()\n");
+    Token *startTk=crtTk;
+    if(typeBase())
+    {
+        if(consume(ID))
+        {
+            arrayDecl();
+            for(;;)
+            {
+                if(consume(COMMA))
+                {
+                    if(consume(ID))
+                    {
                         arrayDecl();
-                        while(1){
-                            if(consume(COMMA)){
-                                if(consume(ID)){
-                                    arrayDecl();
-                                } else printf("Expected ID after comma");
-                            } else break;
-                        }
-                        if(consume(SEMICOLON)){
-                            return 1;
-                        }else tkerr(crtTk,"Missing Semicolon");
-                }
-        }
-        crtTk=startTk;
-        return 0;
-    }
+                    }
+                    else
+                    {
+                        tkerr(crtTk,"Missing ID after comma!");
+                    }
 
-    int declStruct(){
-        Token *startTk=crtTk;
-        if(consume(STRUCT)){
-            if(consume(ID)){
-                if(consume(LACC)){
-                 while(1){
-                    if(declVar()){}
-                    else break;
-                 }
-                 if(consume(RACC)){
-                    if(consume(SEMICOLON)){
-                        return 1;
-                    }else tkerr(crtTk,"Missing Semicolon");
-                 }
                 }
+                else
+                break;
+            }
+            if(consume(SEMICOLON))
+            {
+                return 1;
+            }
+            else
+            {
+                tkerr(crtTk,"Missing semicolon!");
             }
         }
+        else
+        {
+            tkerr(crtTk,"Missing ID after typeBase!");
+        }
 
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int declStruct()
+{
+    //printf("declStruct()\n");
+    Token *startTk=crtTk;
+    if(consume(STRUCT))
+    {
+        if(consume(ID))
+        {
+            if(consume(LACC))
+            {
+                for(;;)
+                {
+                    if(!declVar())
+                    break;
+                }
+                if(consume(RACC))
+                {
+                    if(consume(SEMICOLON))
+                        return 1;
+                    else
+                    {
+                        tkerr(crtTk,"Missing semicolon!");
+                    }
+                }
+                else tkerr(crtTk,"Missing right accolade!");
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing ID for STRUCT");
+        }
+
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int typeName()
+{
+    //printf("typeName()\n");
+    Token *startTk=crtTk;
+    if(typeBase())
+    {
+        arrayDecl();
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int declFunc()
+{
+    //printf("declFunc()\n");
+    Token *startTk=crtTk;
+    if(typeBase())
+    {
+        consume(MUL);
+        if(consume(ID))
+        {
+            if(consume(LPAR))
+            {
+                funcArg();
+                for(;;)
+                {
+                    if(consume(COMMA))
+                    {
+                        if(!funcArg())
+                        {
+                            tkerr(crtTk,"Missing function argumnets after COMMA!");
+                            break;
+                        }
+                    }
+                    else
+                        {
+                            break;
+                        }
+
+                }
+                if(consume(RPAR))
+                {
+                    if(stmCompound())
+                    {
+                        return 1;
+                    }
+                    else tkerr(crtTk,"Missing compound for function!");
+                }
+                else tkerr(crtTk,"Missing RPAR in function!");
+
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing ID after typeBase!");
+        }
+    }
+    if(consume(VOID))
+    {
+        if(consume(ID))
+        {
+            if(consume(LPAR))
+            {
+                if(funcArg())
+                {
+                    for(;;)
+                    {
+                        if(consume(COMMA))
+                            if(!funcArg())
+                            {
+                                tkerr(crtTk,"Missing function argumnets after COMMA!");
+                            }
+                            else
+                            break;
+                    }
+                    if(consume(RPAR))
+                    {
+                        if(stmCompound())
+                        {
+                            return 1;
+                        }
+                        else tkerr(crtTk,"Missing compound for function!");
+                    }
+                        else tkerr(crtTk,"Missing RPAR in function!");
+                }
+                if(consume(RPAR))
+                    {
+                        if(stmCompound())
+                        {
+                            return 1;
+                        }
+                        else tkerr(crtTk,"Missing compound for function!");
+                    }
+                    else tkerr(crtTk,"Missing RPAR in function!");
+
+            }
+            else
+            {
+                tkerr(crtTk,"Missing LPAR after ID in function!");
+            }
+
+        }
+        else
+        {
+            tkerr(crtTk,"Missing ID for function!");
+        }
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int stm()
+{
+    //printf("stm()\n");
+    Token *startTk=crtTk;
+    if(stmCompound())
+    {
+        return 1;
+    }
+    if(consume(IF))
+    {
+        if(consume(LPAR))
+        {
+            if(expr())
+            {
+                if(consume(RPAR))
+                {
+                    if(stm())
+                    {
+                        if(consume(ELSE))
+                        {
+                            if(stm())
+                                return 1;
+                            else tkerr(crtTk,"Missing stm after ELSE!");
+                        }
+                        return 1;
+                    }
+                    else tkerr(crtTk,"Missing stm after RPAR!");
+                }
+                else tkerr(crtTk,"Missing RPAR after expr!");
+            }
+            else tkerr(crtTk,"Missing expr after LPAR!");
+        }
+        else tkerr(crtTk,"Missing LPAR after IF!");
+    }
+    else if(consume(WHILE))
+        {
+            if(consume(LPAR))
+            {
+                if(expr())
+                {
+                    if(consume(RPAR))
+                    {
+                        if(stm())
+                        {
+                            return 1;
+                        }
+                        else tkerr(crtTk,"Missing stm after RPAR!");
+                    }
+                    else tkerr(crtTk,"Missing RPAR after expr!");
+                }
+                else tkerr(crtTk,"Missing expr after LPAR!");
+            }
+            else tkerr(crtTk,"Missing LPAR after WHILE!");
+        }
+        else
+        if(consume(FOR))
+        {
+            if(consume(LPAR))
+            {
+                expr();
+                if(consume(SEMICOLON))
+                {
+                    expr();
+                    if(consume(SEMICOLON))
+                    {
+                        expr();
+                        if(consume(RPAR))
+                        {
+                            if(stm())
+                            {
+                                return 1;
+                            }else tkerr(crtTk,"Missing stm after RPAR!");
+                        }else tkerr(crtTk,"Missing RPAR!");
+                    }else tkerr(crtTk,"Missing second SEMICOLON after LPAR!");
+                }
+                else tkerr(crtTk,"Missing SEMICOLON after LPAR!");
+            }
+            else tkerr(crtTk,"Missing LPAR after FOR!");
+        }
+        else
+        if(consume(BREAK))
+        {
+            if(consume(SEMICOLON))
+            {
+                return 1;
+            }
+            else tkerr(crtTk,"Missing SEMICOLON after BREAK!");
+
+        }
+        else
+        if(consume(RETURN))
+        {
+            expr();
+            if(consume(SEMICOLON))
+            {
+                return 1;
+            }
+            else tkerr(crtTk,"Missing SEMICOLON after RETURN!");
+        }
+        else
+        {
+            if(expr())
+            {
+                if(consume(SEMICOLON))
+                {
+                    return 1;
+                }
+                else tkerr(crtTk,"Missing SEMICOLON after expr!");
+            }
+            else if(consume(SEMICOLON))
+            {
+                return 1;
+            }
+        }
         crtTk=startTk;
         return 0;
+}
+
+int stmCompound()
+{
+    //printf("stmCompound()");
+    Token *startTk=crtTk;
+    if(consume(LACC))
+    {
+        for(;;)
+        {
+            if(!declVar() && !stm())
+            {
+                break;
+            }
+        }
+        if(consume(RACC))
+        {
+            return 1;
+        }
+        else
+        {
+            tkerr(crtTk,"Missing RACC!");
+        }
+
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int expr()
+{
+    //printf("expr()\n");
+    Token *startTk=crtTk;
+    if(exprAssign())
+    {
+        //printf("expr()->exprAssign()\n");
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int exprAssign()
+{
+    //printf("exprAssign()\n");
+    Token *startTk=crtTk;
+    if(exprUnary())
+    {
+        //printf("Trece de Unary\n");
+        if(consume(ASSIGN))
+        {
+            if(exprAssign())
+            {
+                //printf("exprAssign()->exprAssign()\n");
+                return 1;
+            }
+            else
+            {
+                tkerr(crtTk,"Missing an expression after ASSIGN!");
+            }
+        }
+        //else tkerr(crtTk,"Missing ASSIGN after exprUnary!");
+    }
+    crtTk=startTk;
+    if(exprOr())
+    {
+            //printf("exprAssing()->exprOr()\n");
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int exprOrPrim()
+{
+    //printf("exprOrPrime()\n");
+    if(consume(OR))
+    {
+        if(exprAnd())
+        {
+            if(exprOrPrim())
+            {
+                //printf("exprOrPrim()->exprOrPrim()\n");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing exprAnd after OR!");
+        }
+
+    }
+    return 1;
+}
+int exprOr()
+{
+    //printf("exprOr()\n");
+    Token *startTk=crtTk;
+    if(exprAnd())
+    {
+        if(exprOrPrim())
+        {
+            //printf("exprOr->exprOrPrim()\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing and expression after exprAnd()");
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprAnd: exprAnd AND exprEq | exprEq ;
+
+int exprAndPrim()
+{
+    //printf("exprAndPrime()\n");
+    if(consume(AND))
+    {
+        if(exprEq())
+        {
+            if(exprAndPrim())
+            {
+                //printf("exprAndPrim()->exprAndPrim()");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after AND!");
+        }
+    }
+    return 1;
+}
+int exprAnd()
+{
+    //printf("exprAnd()\n");
+    Token *startTk=crtTk;
+    if(exprEq())
+    {
+        if(exprAndPrim())
+        {
+            //printf("exprAnd()->exprAndPrim()\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing expression after exprEq!");
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprEq: exprEq ( EQUAL | NOTEQ ) exprRel | exprRel ;
+
+int exprEqPrim()
+{
+    //printf("exprEqPrime()\n");
+    if(consume(EQUAL) || consume(NOTEQ))
+    {
+        if(exprRel())
+        {
+            if(exprEqPrim())
+            {
+                //printf("exprEqPrim()->exprEqPrim()\n");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after EQUAL or NOTEQ!");
+        }
+
+    }
+    return 1;
+}
+int exprEq()
+{
+    //printf("exprEq()\n");
+    Token *startTk=crtTk;
+    if(exprRel())
+    {
+        if(exprEqPrim())
+        {
+            //printf("exprEq->exprEqPrim\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing expression after exprRel!");
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprRel: exprRel ( LESS | LESSEQ | GREATER | GREATEREQ ) exprAdd | exprAdd ;
+
+int exprRelPrim()
+{
+    //printf("exprRelPrime()\n");
+    if(consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ))
+    {
+        if(exprAdd())
+        {
+            if(exprRelPrim())
+            {
+                //printf("exprRelPrim()->exprRelPrim()\n");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after LESS or LESSEQ or GREATER or GREATEREQ!");
+        }
+    }
+    return 1;
+}
+int exprRel()
+{
+    //printf("exprRel\n");
+    Token *startTk=crtTk;
+    if(exprAdd())
+    {
+        if(exprRelPrim())
+        {
+            //printf("exprRel()->exprRelPrim()\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing expression after exprAdd");
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprAdd: exprAdd ( ADD | SUB ) exprMul | exprMul ;
+//de modificat consume adaugat consumed tk
+//find simbol trebuie sa caute in tabela de simboluri de jos in sus
+//delSymbolsAfter() sterge toate simbolurile de dupa simbolul pe care il dam noi din tabela
+int exprAddPrim()
+{
+    //printf("exprAddPrime()\n");
+    if(consume(ADD) || consume(SUB))
+    {
+        if(exprMul())
+        {
+            if(exprAddPrim())
+            {
+                //printf("exprAddPrim()->exprAddPrim()\n");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after ADD or SUB");
+        }
+    }
+    return 1;
+}
+int exprAdd()
+{
+    //printf("exprAdd()\n");
+    Token *startTk=crtTk;
+    if(exprMul())
+    {
+        if(exprAddPrim())
+        {
+            //printf("exprAdd()->exprAddPrim()\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing expression after exprMul!");
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprMul: exprMul ( MUL | DIV ) exprCast | exprCast ;
+
+int exprMulPrim()
+{
+    //printf("exprMulPrime()\n");
+    if(consume(MUL) || consume(DIV))
+    {
+        if(exprCast())
+        {
+            if(exprMulPrim())
+            {
+                //printf("exprMulPrim()->exprMulPrim()\n");
+                return 1;
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after MUL or DIV");
+        }
+    }
+    return 1;
+}
+int exprMul()
+{
+    //printf("exprMul()\n");
+    Token *startTk=crtTk;
+    if(exprCast())
+    {
+        if(exprMulPrim())
+        {
+            //printf("exprMul()->exprMulPrim()\n");
+            return 1;
+        }
+        else tkerr(crtTk,"Missing expression after exprCast");
+    }
+    startTk=crtTk;
+    return 0;
+}
+
+//exprCast: LPAR typeName RPAR exprCast | exprUnary ;
+
+int exprCast()
+{
+    //printf("exprCast()\n");
+    Token *startTk=crtTk;
+    if(consume(LPAR))
+    {
+        if(typeName())
+        {
+            if(consume(RPAR))
+            {
+                if(exprCast())
+                {
+                    //printf("exprCast()->exprCast()\n");
+                    return 1;
+                }
+            }
+            else
+                {
+                    tkerr(crtTk,"Missing RPAR in cast!");
+                }
+        }
+        else tkerr(crtTk,"Missing typename after LPAR");
+    }
+    else if(exprUnary())
+    {
+        //printf("exprCast()->exprUnary()\n");
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+//exprUnary: ( SUB | NOT ) exprUnary | exprPostfix ;
+
+int exprUnary()
+{
+    //printf("exprUnary()\n");
+    Token *startTk=crtTk;
+    //printf("%s\n\n\n",conv(crtTk->code));
+    if(consume(SUB) || consume(NOT))
+    {
+        if(exprUnary())
+        {
+            //printf("exprUnary()->exprUnary()\n");
+            return 1;
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expression after SUB or NOT!");
+        }
+    }
+    else if(exprPostfix())
+    {
+        //printf("exprUnary()->exprPostfix()\n");
+        return 1;
+    }
+    crtTk=startTk;
+    return 0;
+}
+
+int exprPostfixPrime()
+{
+    //printf("exprPostfixPrime()\n");
+    if(consume(LBRACKET))
+    {
+        if(expr())
+        {
+            if(consume(RBRACKET))
+            {
+                if(exprPostfixPrime())
+                {
+                    //printf("exprPostfixPrime()->exprPostfixPrime()1\n");
+                    return 1;
+                }
+            }
+            else
+            {
+                tkerr(crtTk,"Missing RBRACKET in postfix!");
+            }
+        }else tkerr(crtTk,"Missing expression after LBRACKET");
+    }
+    else
+    {
+        if(consume(DOT))
+        {
+            if(consume(ID))
+            {
+                if(exprPostfixPrime())
+                {
+                    //printf("exprPostfixPrime()->exprPostfixPrime()2\n");
+                    return 1;
+                }
+            }
+            else
+            {
+                tkerr(crtTk,"Missing ID after DOT in postfix!");
+            }
+        }
     }
 
-    int unit(){
-        while(1){
-            printf("%d", crtTk->code);
-            if(declStruct()){}
-            else if(declFunc()){}
-            else if(declVar()){}
-            else break;
-        }
-        if(consume(END)){
+    return 1;
+}
+
+int exprPostfix()
+{
+    //printf("exprPostfix()\n");
+    Token *startTk=crtTk;
+    if(exprPrimary())
+    {
+        if(exprPostfixPrime())
+        {
+            //printf("exprPostfix()->exprPostfixPrime()\n");
             return 1;
-        }else{
-            printf("expected END of file");
-        }
-        return 0;
+        }else tkerr(crtTk,"Missing expression after exprPrimary!");
     }
+    crtTk=startTk;
+    return 0;
+}
+
+/*
+exprPrimary: ID ( LPAR ( expr ( COMMA expr )* )? RPAR )?
+           | CT_INT
+           | CT_REAL
+           | CT_CHAR
+           | CT_STRING
+           | LPAR expr RPAR ;
+*/
+
+int exprPrimary()
+{
+    //printf("exprPrimary()\n");
+    Token *startTk=crtTk;
+    if(consume(ID))
+    {
+        //printf("%s\n",crtTk->text);
+        if(consume(LPAR))
+        {
+            if(expr())
+            {
+                for(;;)
+                {
+                    if(consume(COMMA))
+                    {
+                        if(!expr())
+                            tkerr(crtTk,"Missing expr after COMMA!");
+                    }
+                    else
+                        break;
+                }
+            }
+            if(consume(RPAR))
+               return 1;
+            else
+            {
+                tkerr(crtTk,"Missing LPAR after expression!");
+            }
+
+        }
+        return 1;
+    }
+    if(consume(CT_INT))
+    {
+        return 1;
+    }
+    if(consume(CT_REAL))
+    {
+        return 1;
+    }
+    if(consume(CT_CHAR))
+    {
+        return 1;
+    }
+    if(consume(CT_STRING))
+    {
+        return 1;
+    }
+    if(consume(LPAR))
+    {
+        if(expr())
+        {
+            if(consume(RPAR))
+            {
+                return 1;
+            }
+            else
+            {
+                tkerr(crtTk,"Missing RPAR in expression!");
+            }
+        }
+        else
+        {
+            tkerr(crtTk,"Missing expr after LPAR!");
+        }
+    }
+    crtTk=startTk;
+    return 0;
+}
 
 void printAtoms(Token *tk) {
     static char *atomsNames[] = {
@@ -1406,12 +2325,8 @@ int main() {
         }
 
     }
-    for(Token *p = tokens; p!=NULL;p = p->next)
-    {
-        printf("%d ", p->code);
-    }
-    printf("\n\n\n\n\n");
-    crtTk=tokens;
+
+        crtTk=tokens;
         if(unit()){
             printf("Syntax ok \n");
         }else {
