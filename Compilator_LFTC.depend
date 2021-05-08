@@ -10,7 +10,7 @@
 	<sys/stat.h>
 	<fcntl.h>
 
-1620493818 source:c:\users\aleku\desktop\lftc\compilator_lftc\main.c
+1620494442 source:c:\users\aleku\desktop\lftc\compilator_lftc\main.c
 	<stdlib.h>
 	<stdio.h>
 	<unistd.h>
