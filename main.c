@@ -1336,6 +1336,7 @@ int getNextTk() {
 
     int unit(){
         while(1){
+            printf("%d", crtTk->code);
             if(declStruct()){}
             else if(declFunc()){}
             else if(declVar()){}
@@ -1405,14 +1406,19 @@ int main() {
         }
 
     }
-
+    for(Token *p = tokens; p!=NULL;p = p->next)
+    {
+        printf("%d ", p->code);
+    }
+    printf("\n\n\n\n\n");
     crtTk=tokens;
         if(unit()){
-            printf("Syntax ok");
+            printf("Syntax ok \n");
         }else {
-            printf("Error");
+            printf("Error \n");
             return 1;
         }
+
 
     return 0;
 
